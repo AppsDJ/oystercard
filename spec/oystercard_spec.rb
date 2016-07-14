@@ -17,7 +17,7 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
   end
-  
+
   context "on top up" do
     it 'raises error if balance exceeds max amount' do
       max_balance = Oystercard::MAX_BALANCE
