@@ -27,12 +27,14 @@ class Oystercard
     raise "insufficient funds" if insufficient_funds?
     @entry_station = entry_station
     journey[:entry_station] = entry_station
+    # journey.start(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(MIN_FARE)
     @entry_station = nil
     journey[:exit_station] = exit_station
+    log_journeys(journey)
   end
 
   def in_journey?
