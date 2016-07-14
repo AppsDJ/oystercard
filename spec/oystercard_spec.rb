@@ -59,11 +59,18 @@ describe Oystercard do
   end
 
   context "on logging journeys" do
-    it 'checks if the Oystercard stores a log for journeys' do
+    before(:each) do
       subject.top_up(10)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
+    end
+    it 'checks if the Oystercard stores a log for one journey' do
       expect(subject.journey.key(exit_station)).to eq :exit_station
+    end
+    let(:journey) { double :journey }
+    it 'checks it the Oystercard storesa a log for all journeys' do
+      subject.log_journeys(journey)
+      expect(subject.journeys).to include journey
     end
   end
 end
