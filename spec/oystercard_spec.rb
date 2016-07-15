@@ -13,9 +13,9 @@ describe Oystercard do
     it 'returns the initial balance of 0' do
       expect(subject.balance).to eq 0
     end
-    it 'shows status as not in journey when initiated' do
-      expect(subject).not_to be_in_journey
-    end
+    # it 'shows status as not in journey when initiated' do
+    #   expect(subject).not_to be_in_journey
+    # end
   end
 
   context "on top up" do
@@ -38,7 +38,7 @@ describe Oystercard do
     it "logs the entry station" do
       subject.top_up(10)
       subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      expect(subject.journey.a_journey[:entry_station]).to eq station
     end
   end
 
@@ -50,12 +50,6 @@ describe Oystercard do
     it "deducts minimum fare" do
       expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
     end
-    it "resets entry station at touch_out" do
-      subject.top_up(10)
-      subject.touch_in(station)
-      subject.touch_out(exit_station)
-      expect(subject.entry_station).to eq nil
-    end
   end
 
   context "on logging journeys" do
@@ -65,12 +59,12 @@ describe Oystercard do
       subject.touch_out(exit_station)
     end
     it 'checks if the Oystercard stores a log for one journey' do
-      expect(subject.journey.key(exit_station)).to eq :exit_station
+      expect(subject.journey.a_journey.key(exit_station)).to eq :exit_station
     end
-    let(:journey) { double :journey }
-    it 'checks it the Oystercard storesa a log for all journeys' do
-      subject.log_journeys(journey)
-      expect(subject.journeys).to include journey
+    # let(:journey) { double :journey.a_journey }
+    it 'checks it the Oystercard stores a log for all journeys' do
+      # subject.log_journeys
+      expect(subject.journeys).to include subject.journey.a_journey
     end
   end
 end
